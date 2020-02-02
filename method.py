@@ -2,6 +2,7 @@
 # Janet Madrid
 import numpy as np
 import pandas as pd
+import math
 
 data = pd.read_csv("poker-hand-training-true.data", sep = ",", header = None)
 data = data.to_numpy()
@@ -36,7 +37,11 @@ def covariance(arr1, arr2):
 
 # Cor function
 def correlation(arr1, arr2):
-    pass
+    cov = covariance(arr1, arr2)
+    var1 = math.sqrt(variance(arr1))
+    var2 = math.sqrt(variance(arr2))
+
+    return cov/(var1*var2)
 
 # Range norm function
 def range_norm(arr):
@@ -50,5 +55,16 @@ def stanard_norm(arr):
 def covar_matrix(arr):
     pass
 
+def variance(arr):
+    multiplier = 1/(len(arr)-1)
+
+    mean = np.mean(arr)
+
+    sum = 0
+    for i in range(0,len(arr)-1):
+        sum += (arr[i]-mean)**2
+    return sum * multiplier
+
 #print(multi_dim_mean(data))
-print(covariance(data[0], data[1]))
+#print(covariance(data[0], data[1]))
+print(correlation(data[0], data[1]))

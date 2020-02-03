@@ -45,10 +45,23 @@ def correlation(arr1, arr2):
 
 # Range norm function
 def range_norm(arr):
-    pass
+    # New matrix
+    new_matrix = [][]
+    # Iterate over the columns
+    for i in range(0, len(arr[0])-1):
+        column = []
+        for j in range(0, len(arr)-1):
+            column.append(arr[j][i])
+        min_val = min(column)
+        max_val = max(column)
+        for j in range(0,len(column)-1):
+            new_value = (column[j]-min_val) / (max_val-min_val)
+            new_matrix[j][i] = new_value
+    return(new_matrix)
+
 
 # Standard norm function
-def stanard_norm(arr):
+def standard_norm(arr):
     pass
 
 # Covar matrix function
@@ -66,5 +79,6 @@ def variance(arr):
     return sum * multiplier
 
 #print(multi_dim_mean(data))
-#print(covariance(data[0], data[1]))
-print(correlation(data[0], data[1]))
+# For columns use below
+#print(covariance(data[:,0], data[:,1])) 
+#print(correlation(data[0], data[1]))

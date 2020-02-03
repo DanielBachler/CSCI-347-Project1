@@ -56,10 +56,23 @@ def correlation(arr1, arr2):
 
 # Range norm function
 def range_norm(arr):
-    pass
+    # New matrix
+    new_matrix = [][]
+    # Iterate over the columns
+    for i in range(0, len(arr[0])-1):
+        column = []
+        for j in range(0, len(arr)-1):
+            column.append(arr[j][i])
+        min_val = min(column)
+        max_val = max(column)
+        for j in range(0,len(column)-1):
+            new_value = (column[j]-min_val) / (max_val-min_val)
+            new_matrix[j][i] = new_value
+    return(new_matrix)
+
 
 # Standard norm function
-def stanard_norm(arr):
+def standard_norm(arr):
     y1 = np.array(arr)
     mean  = y1.mean(axis=0)
     sd = y1.std(axis=0)

@@ -4,15 +4,7 @@ import numpy as np
 import pandas as pd
 import math
 
-data = pd.DataFrame([
-    [0.3,23, 5.6],
-    [0.4, 1, 5.4],
-    [1.8, 4, 5.2],
-    [6, 50, 5.1],
-    [-0.5, 34, 5.3],
-    [0.4, 19, 5.4],
-    [1.1, 11, 5.5],
-])
+data = pd.read_csv("poker-hand-training-true.data", sep = ",", header = None)
 data = data.to_numpy()
 #print(data)
 # Multi-dim mean function
@@ -57,15 +49,16 @@ def correlation(arr1, arr2):
 # Range norm function
 def range_norm(arr):
     # New matrix
-    new_matrix = [][]
+    rows, columns = len(arr), len(arr[0])
+    new_matrix = np.zeros((rows, columns))
     # Iterate over the columns
-    for i in range(0, len(arr[0])-1):
+    for i in range(0, len(arr[0])):
         column = []
-        for j in range(0, len(arr)-1):
+        for j in range(0, len(arr)):
             column.append(arr[j][i])
         min_val = min(column)
         max_val = max(column)
-        for j in range(0,len(column)-1):
+        for j in range(0,len(column)):
             new_value = (column[j]-min_val) / (max_val-min_val)
             new_matrix[j][i] = new_value
     return(new_matrix)
@@ -80,7 +73,26 @@ def standard_norm(arr):
 
 # Covar matrix function
 def covar_matrix(arr):
-    pass
+    covar_matrix = []
+    # Get columns
+    columns = []
+    for i in range(0,len(arr[0])):
+        column = []
+        for j in range(0,len(arr)):
+            column.append(arr[j][i])
+        columns.append(column)
+    # Get covar matrix
+    for i in range(0, len(columns)):
+        row = []
+        for j in range(0, len(columns)):
+            if i == j:
+                row.append(variance(columns[i]))
+            else:
+                row.append(covariance(columns[i], columns[j]))
+    return covar_matrix
+
+
+    
 
 def variance(arr):
     multiplier = 1/(len(arr)-1)
@@ -97,6 +109,6 @@ def variance(arr):
 #print(correlation(data[:,0], data[:,2]))
 #temp = variance(data[:,0]) 
 #print(math.sqrt(temp))
-print(stanard_norm(data))
-from scipy import stats
-print(stats.zscore(data))
+#print(range_norm(data))
+#print(standard_norm(data))
+

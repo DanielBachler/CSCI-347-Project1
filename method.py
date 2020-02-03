@@ -4,7 +4,15 @@ import numpy as np
 import pandas as pd
 import math
 
-data = pd.read_csv("poker-hand-training-true.data", sep = ",", header = None)
+data = pd.DataFrame([
+    [0.3,23, 5.6],
+    [0.4, 1, 5.4],
+    [1.8, 4, 5.2],
+    [6, 50, 5.1],
+    [-0.5, 34, 5.3],
+    [0.4, 19, 5.4],
+    [1.1, 11, 5.5],
+])
 data = data.to_numpy()
 #print(data)
 # Multi-dim mean function
@@ -26,20 +34,23 @@ def covariance(arr1, arr2):
     mean_2 = np.mean(arr2)
 
     # Get multipler
-    multiplier = len(arr1) - 1
+    multiplier = 1/(len(arr1) - 1)
 
     sum = 0
     for i in range(0,len(arr1)-1):
         val1 = arr1[i] - mean_1
         val2 = arr2[i] - mean_2
         sum += (val1*val2)
-    return sum * (1/multiplier)
+    return sum * multiplier
 
 # Cor function
 def correlation(arr1, arr2):
     cov = covariance(arr1, arr2)
-    var1 = math.sqrt(variance(arr1))
-    var2 = math.sqrt(variance(arr2))
+    var1 = variance(arr1)
+    var2 = variance(arr2)
+
+    var1 = math.sqrt(var1)
+    var2 = math.sqrt(var2)
 
     return cov/(var1*var2)
 
@@ -49,7 +60,10 @@ def range_norm(arr):
 
 # Standard norm function
 def stanard_norm(arr):
-    pass
+    y1 = np.array(arr)
+    mean  = y1.mean(axis=0)
+    sd = y1.std(axis=0)
+    return((y1-mean)/sd)
 
 # Covar matrix function
 def covar_matrix(arr):
@@ -66,5 +80,10 @@ def variance(arr):
     return sum * multiplier
 
 #print(multi_dim_mean(data))
-#print(covariance(data[0], data[1]))
-print(correlation(data[0], data[1]))
+#print(covariance(data[:,0], data[:,2]))
+#print(correlation(data[:,0], data[:,2]))
+#temp = variance(data[:,0]) 
+#print(math.sqrt(temp))
+print(stanard_norm(data))
+from scipy import stats
+print(stats.zscore(data))
